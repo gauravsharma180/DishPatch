@@ -1,0 +1,164 @@
+{
+  "config": {
+    "orders": 2000,
+    "concurrency": 20,
+    "dupRate": 0.03,
+    "hotRate": 0.05,
+    "hotStock": 300,
+    "customers": 300,
+    "restaurants": 100
+  },
+  "wall_seconds": 32.2,
+  "total_http_requests": 16106,
+  "http_rps": 500,
+  "orders_placed_per_sec": 62,
+  "outcome": {
+    "delivered": 2000,
+    "outOfStock": 0,
+    "failed": 0,
+    "dupReplayed": 53,
+    "dupMismatch": 0,
+    "hotOk": 91,
+    "hotSoldOut": 0,
+    "assignTimeout": 0
+  },
+  "latency_ms": {
+    "place_order": {
+      "n": 2053,
+      "p50": 42.5,
+      "p95": 68.1,
+      "p99": 84.8,
+      "max": 106
+    },
+    "socket_subscribe": {
+      "n": 2000,
+      "p50": 9,
+      "p95": 17.5,
+      "p99": 29.8,
+      "max": 36.9
+    },
+    "accept": {
+      "n": 2000,
+      "p50": 35.3,
+      "p95": 58.3,
+      "p99": 75.4,
+      "max": 249.3
+    },
+    "transition": {
+      "n": 8000,
+      "p50": 35.9,
+      "p95": 59.1,
+      "p99": 76.8,
+      "max": 256.1
+    },
+    "driver_location": {
+      "n": 2000,
+      "p50": 11.3,
+      "p95": 25.6,
+      "p99": 34.2,
+      "max": 41.7
+    },
+    "place_order_retry": {
+      "n": 53,
+      "p50": 10.9,
+      "p95": 20.2,
+      "p99": 22.1,
+      "max": 22.1
+    }
+  },
+  "status_codes": {
+    "place_order": {
+      "201": 2000,
+      "409": 53
+    },
+    "socket_subscribe": {
+      "ok": 2000
+    },
+    "accept": {
+      "200": 2000
+    },
+    "transition": {
+      "200": 8000
+    },
+    "driver_location": {
+      "200": 2000
+    },
+    "place_order_retry": {
+      "201": 53
+    }
+  },
+  "dispatch": {
+    "client_observed_accept_to_assigned_ms": {
+      "n": 2000,
+      "p50": 134.9,
+      "p95": 225,
+      "p99": 265.7,
+      "max": 332.5
+    },
+    "server_accept_to_assigned_ms": {
+      "p50": 131,
+      "p95": 222,
+      "p99": 272
+    },
+    "decision_p95_ms": 84,
+    "avg_pickup_distance_m": 919,
+    "avg_pickup_eta_s": 198,
+    "assigned": 2000,
+    "retries": 0
+  },
+  "full_flow_ms": {
+    "n": 2000,
+    "p50": 324.7,
+    "p95": 415.2,
+    "p99": 514.8,
+    "max": 681.8
+  },
+  "realtime": {
+    "connected": 300,
+    "eventsReceived": 12000,
+    "assignmentsViaPush": 2000,
+    "fallbackPolls": 0,
+    "open_websockets": 300
+  },
+  "invariants": {
+    "orders_in_db_equals_unique_201s": {
+      "pass": true,
+      "db": 2000,
+      "client": 2000
+    },
+    "stock_conserved": {
+      "pass": true,
+      "mismatched_items": 0
+    },
+    "hot_item_never_oversold": {
+      "pass": true,
+      "hot_stock": 300,
+      "hot_orders_accepted": 91,
+      "hot_rejected_out_of_stock": 0
+    },
+    "no_driver_over_capacity": {
+      "pass": true,
+      "over": 0
+    },
+    "all_driver_slots_released": {
+      "pass": true,
+      "still_active": 0
+    },
+    "complete_event_trail": {
+      "pass": true,
+      "incomplete": 0
+    },
+    "idempotent_retries_returned_same_order": {
+      "pass": true,
+      "mismatches": 0,
+      "replays": 53
+    }
+  },
+  "all_invariants_pass": true,
+  "sample_errors": [],
+  "machine": {
+    "node": "v22.22.0",
+    "cpus": 2
+  },
+  "ran_at": "2026-10-02T16:21:38.219Z"
+}

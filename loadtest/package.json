@@ -1,0 +1,13 @@
+{
+  "name": "foodflow-loadtest",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "seed": "cd ../backend && node src/db/seed.js --restaurants 100 --drivers 1000 --customers 2000 --stock 100000",
+    "test": "node loadtest.js --orders 10000 --concurrency 200"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.8.4",
+    "undici": "^8.11.2"
+  }
+}
