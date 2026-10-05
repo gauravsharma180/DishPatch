@@ -1,6 +1,6 @@
 # One order, end to end
 
-This follows a single order through FoodFlow and lists exactly what each step touches: HTTP call, SQL, Redis keys, socket events. If you can narrate this page from memory, you can answer most system-design follow-ups about the project.
+This follows a single order through DishPatch and lists exactly what each step touches: HTTP call, SQL, Redis keys, socket events. If you can narrate this page from memory, you can answer most system-design follow-ups about the project.
 
 Cast: customer **C** (`customer1`), kitchen **K** (`owner1`, restaurant 1), rider **R**, dispatch worker **W**.
 

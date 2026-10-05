@@ -1,8 +1,8 @@
-# FoodFlow: resume and interview notes
+# DishPatch: resume and interview notes
 
 ## Resume entry
 
-**FoodFlow** | Node.js, Express.js, PostgreSQL, Redis, Socket.IO, React.js
+**DishPatch** | Node.js, Express.js, PostgreSQL, Redis, Socket.IO, React.js
 
 - Built a real-time food-delivery platform with an 8-state order lifecycle, role-checked transitions, an append-only event trail, and live order tracking over Socket.IO for customers, kitchens, riders and ops.
 - Designed a dispatch engine that finds riders with Redis GEOSEARCH in expanding 3/6/10 km rings, ranks them on distance, ETA vs food-ready time and workload, and claims them with guarded SQL updates so concurrent dispatches never exceed rider capacity.
@@ -21,7 +21,7 @@ Don't claim more than this. If asked "would it handle Swiggy's scale", the hones
 
 ## 60-second walkthrough
 
-"FoodFlow takes an order from the customer's tap to the doorstep. When a customer orders, one Postgres transaction creates the order and reserves stock with a conditional decrement, so two people can't buy the last plate. The request carries an idempotency key, so a retry from a flaky phone returns the same order instead of making a second one.
+"DishPatch takes an order from the customer's tap to the doorstep. When a customer orders, one Postgres transaction creates the order and reserves stock with a conditional decrement, so two people can't buy the last plate. The request carries an idempotency key, so a retry from a flaky phone returns the same order instead of making a second one.
 
 When the kitchen accepts, the order goes into a Redis sorted-set queue. A dispatch worker pulls it, searches nearby riders with Redis GEO, scores them on distance, how well their arrival lines up with the food being ready, and how many orders they're already carrying, then claims the best one with a guarded SQL update. That guard is what stops two parallel dispatches from giving one rider five orders.
 

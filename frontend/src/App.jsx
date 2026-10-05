@@ -19,7 +19,7 @@ function Shell({ session, onLogout, children }) {
     <div className="shell">
       <header className="topbar">
         <a className="brand" href={HOME[session.user.role]}>
-          FoodFlow
+          DishPatch
         </a>
         <span className="role-chip">{ROLE_NAME[session.user.role]}</span>
         <span className={`live ${live ? 'on' : ''}`} title={live ? 'Realtime connected' : 'Reconnecting'}>

@@ -49,7 +49,7 @@ class SimDriver {
   }
 
   async start() {
-    const { token, user } = await login(`driver${this.n}@foodflow.dev`);
+    const { token, user } = await login(`driver${this.n}@dishpatch.dev`);
     this.token = token;
     this.id = user.driverId;
     const me = await api('/api/drivers/me', { token });
@@ -110,12 +110,12 @@ class SimDriver {
 
 // ---------------------------------------------------------------- kitchens
 async function runKitchens() {
-  const admin = await login('admin@foodflow.dev');
+  const admin = await login('admin@dishpatch.dev');
   const owners = new Map(); // restaurantId -> token
   const ownerToken = async (rid) => {
     if (!owners.has(rid)) {
       // seed maps ownerN -> restaurant N
-      const { token } = await login(`owner${rid}@foodflow.dev`);
+      const { token } = await login(`owner${rid}@dishpatch.dev`);
       owners.set(rid, token);
     }
     return owners.get(rid);
@@ -143,7 +143,7 @@ async function runKitchens() {
 
 // ---------------------------------------------------------------- customers
 async function runCustomers(rate) {
-  const tokens = await Promise.all(Array.from({ length: 20 }, (_, i) => login(`customer${i + 2}@foodflow.dev`).then((r) => r.token)));
+  const tokens = await Promise.all(Array.from({ length: 20 }, (_, i) => login(`customer${i + 2}@dishpatch.dev`).then((r) => r.token)));
   for (;;) {
     const token = tokens[Math.floor(Math.random() * tokens.length)];
     const lat = 12.9716 + (Math.random() - 0.5) * 0.08;

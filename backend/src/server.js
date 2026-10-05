@@ -23,7 +23,7 @@ async function main() {
   startLocationFlusher();
   const stopWorker = config.embeddedWorker ? startDispatchWorker() : () => {};
 
-  server.listen(config.port, () => logger.info(`FoodFlow API on :${config.port}`));
+  server.listen(config.port, () => logger.info(`DishPatch API on :${config.port}`));
 
   const shutdown = async (sig) => {
     logger.info({ sig }, 'shutting down');

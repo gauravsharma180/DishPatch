@@ -1,4 +1,4 @@
--- FoodFlow schema. Money is stored in paise (integer) to avoid float rounding.
+-- DishPatch schema. Money is stored in paise (integer) to avoid float rounding.
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 

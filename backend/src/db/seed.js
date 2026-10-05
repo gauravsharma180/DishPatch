@@ -2,7 +2,7 @@
  * Seed a city's worth of data around central Bengaluru.
  *   node src/db/seed.js [--restaurants 40] [--drivers 50] [--customers 500] [--stock 500]
  * All accounts use the password "password123".
- * Demo logins: customer1@foodflow.dev, owner1@foodflow.dev, driver1@foodflow.dev, admin@foodflow.dev
+ * Demo logins: customer1@dishpatch.dev, owner1@dishpatch.dev, driver1@dishpatch.dev, admin@dishpatch.dev
  */
 import bcrypt from 'bcryptjs';
 import { fileURLToPath } from 'node:url';
@@ -49,10 +49,10 @@ export async function seed({ restaurants = 40, drivers = 300, customers = 500, s
   const hash = await bcrypt.hash(PASSWORD, 8);
 
   // Users (bulk insert via unnest: one round trip instead of thousands)
-  const users = [{ name: 'Ops Admin', email: 'admin@foodflow.dev', role: 'ADMIN' }];
-  for (let i = 1; i <= customers; i++) users.push({ name: `Customer ${i}`, email: `customer${i}@foodflow.dev`, role: 'CUSTOMER' });
-  for (let i = 1; i <= restaurants; i++) users.push({ name: `Owner ${i}`, email: `owner${i}@foodflow.dev`, role: 'RESTAURANT' });
-  for (let i = 1; i <= drivers; i++) users.push({ name: `Driver ${i}`, email: `driver${i}@foodflow.dev`, role: 'DRIVER' });
+  const users = [{ name: 'Ops Admin', email: 'admin@dishpatch.dev', role: 'ADMIN' }];
+  for (let i = 1; i <= customers; i++) users.push({ name: `Customer ${i}`, email: `customer${i}@dishpatch.dev`, role: 'CUSTOMER' });
+  for (let i = 1; i <= restaurants; i++) users.push({ name: `Owner ${i}`, email: `owner${i}@dishpatch.dev`, role: 'RESTAURANT' });
+  for (let i = 1; i <= drivers; i++) users.push({ name: `Driver ${i}`, email: `driver${i}@dishpatch.dev`, role: 'DRIVER' });
   const { rows: inserted } = await pool.query(
     `INSERT INTO users (name, email, password_hash, role)
      SELECT n, e, $3, r::user_role FROM unnest($1::text[], $2::text[], $4::text[]) AS t(n, e, r)
@@ -66,7 +66,7 @@ export async function seed({ restaurants = 40, drivers = 300, customers = 500, s
   for (let i = 1; i <= restaurants; i++) {
     const cuisine = pick(Object.keys(CUISINES));
     const p = jitter(6);
-    rest.push({ owner: idByEmail.get(`owner${i}@foodflow.dev`), name: `${pick(NAMES)} ${pick(SUFFIX)} #${i}`, cuisine, ...p, prep: 10 + Math.floor(rand() * 15) });
+    rest.push({ owner: idByEmail.get(`owner${i}@dishpatch.dev`), name: `${pick(NAMES)} ${pick(SUFFIX)} #${i}`, cuisine, ...p, prep: 10 + Math.floor(rand() * 15) });
   }
   const { rows: restRows } = await pool.query(
     `INSERT INTO restaurants (owner_id, name, cuisine, lat, lng, avg_prep_minutes)
@@ -94,7 +94,7 @@ export async function seed({ restaurants = 40, drivers = 300, customers = 500, s
   const dv = { uid: [], name: [], vehicle: [], lat: [], lng: [] };
   for (let i = 1; i <= drivers; i++) {
     const p = jitter(8);
-    dv.uid.push(idByEmail.get(`driver${i}@foodflow.dev`)); dv.name.push(`Driver ${i}`);
+    dv.uid.push(idByEmail.get(`driver${i}@dishpatch.dev`)); dv.name.push(`Driver ${i}`);
     dv.vehicle.push(rand() < 0.8 ? 'BIKE' : 'SCOOTER'); dv.lat.push(p.lat); dv.lng.push(p.lng);
   }
   await pool.query(

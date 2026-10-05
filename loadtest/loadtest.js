@@ -1,5 +1,5 @@
 /**
- * FoodFlow load test: drives N orders through the FULL lifecycle against a running API.
+ * DishPatch load test: drives N orders through the FULL lifecycle against a running API.
  *
  *   npm run seed            # 100 restaurants, 1000 drivers, 2000 customers
  *   npm test                # 10,000 orders, 200 concurrent flows
@@ -96,9 +96,9 @@ const startTs = new Date();
 const { rows: driverRows } = await query('SELECT id FROM drivers ORDER BY id');
 console.log(`warming ${CUSTOMERS} customer, ${restaurants.length} owner, ${driverRows.length} driver sessions...`);
 const warm = [
-  ...Array.from({ length: CUSTOMERS }, (_, i) => `customer${i + 1}@foodflow.dev`),
-  ...restaurants.map((r) => `owner${r.id}@foodflow.dev`),
-  ...driverRows.map((d) => `driver${d.id}@foodflow.dev`),
+  ...Array.from({ length: CUSTOMERS }, (_, i) => `customer${i + 1}@dishpatch.dev`),
+  ...restaurants.map((r) => `owner${r.id}@dishpatch.dev`),
+  ...driverRows.map((d) => `driver${d.id}@dishpatch.dev`),
 ];
 for (let i = 0; i < warm.length; i += 50) await Promise.all(warm.slice(i, i + 50).map(token));
 delete lat.login;
@@ -132,7 +132,7 @@ function customerSocket(email) {
   return sockets.get(email);
 }
 console.log(`opening ${CUSTOMERS} customer websockets...`);
-await Promise.all(Array.from({ length: CUSTOMERS }, (_, i) => customerSocket(`customer${i + 1}@foodflow.dev`)));
+await Promise.all(Array.from({ length: CUSTOMERS }, (_, i) => customerSocket(`customer${i + 1}@dishpatch.dev`)));
 
 // ------------------------------------------------------------------ one order flow
 const outcome = { delivered: 0, outOfStock: 0, failed: 0, dupReplayed: 0, dupMismatch: 0, hotOk: 0, hotSoldOut: 0, assignTimeout: 0 };
@@ -145,7 +145,7 @@ const rand = (a) => a[Math.floor(Math.random() * a.length)];
 
 async function flow(i) {
   const t0 = performance.now();
-  const custEmail = `customer${(i % CUSTOMERS) + 1}@foodflow.dev`;
+  const custEmail = `customer${(i % CUSTOMERS) + 1}@dishpatch.dev`;
   const cust = await token(custEmail);
   const hot = Math.random() < HOT_RATE;
   const r = hot ? restaurants.find((x) => x.id === hotItem.restaurant_id) : rand(restaurants);
@@ -182,7 +182,7 @@ async function flow(i) {
   const id = placed.body.id;
   placedIds.add(id);
 
-  const owner = await token(`owner${r.id}@foodflow.dev`);
+  const owner = await token(`owner${r.id}@dishpatch.dev`);
   const move = async (tok, to, name) => {
     const res = await call(name, `/api/orders/${id}/transition`, { token: tok, method: 'POST', body: { to } });
     if (res.status !== 200) throw new Error(`${to} -> ${res.status} ${JSON.stringify(res.body)}`);
@@ -218,7 +218,7 @@ async function flow(i) {
   waiters.delete(id);
   dispatchWait.push(performance.now() - tAccept);
 
-  const drv = await token(`driver${order.driver_id}@foodflow.dev`);
+  const drv = await token(`driver${order.driver_id}@dishpatch.dev`);
   await move(drv, 'PICKED_UP', 'transition');
   await move(drv, 'DELIVERED', 'transition');
   await call('driver_location', '/api/drivers/me/location', {

@@ -1,4 +1,4 @@
-// Integration tests against real Postgres + Redis (foodflow_test DB, Redis db 1).
+// Integration tests against real Postgres + Redis (dishpatch_test DB, Redis db 1).
 import { test, before, after, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
@@ -19,7 +19,7 @@ async function login(email) {
   const res = await request(app).post('/api/auth/login').send({ email, password: 'password123' }).expect(200);
   return (tokens[email] = res.body.token);
 }
-const customer = (n) => login(`customer${n}@foodflow.dev`);
+const customer = (n) => login(`customer${n}@dishpatch.dev`);
 
 async function place(n, body, key = crypto.randomUUID()) {
   return request(app)
@@ -143,16 +143,16 @@ describe('transactional inventory', () => {
 describe('order lifecycle', () => {
   test('illegal transitions and wrong actors are rejected', async () => {
     const r = await place(7);
-    const owner = await login('owner1@foodflow.dev');
+    const owner = await login('owner1@dishpatch.dev');
     assert.equal((await move(r.body.id, 'DELIVERED', owner)).status, 409);
     assert.equal((await move(r.body.id, 'ACCEPTED', await customer(7))).status, 409);
-    assert.equal((await move(r.body.id, 'ACCEPTED', await login('owner2@foodflow.dev'))).status, 403);
+    assert.equal((await move(r.body.id, 'ACCEPTED', await login('owner2@dishpatch.dev'))).status, 403);
     assert.equal((await move(r.body.id, 'CANCELLED', await customer(8))).status, 403);
   });
 
   test('repeating the current status is a safe no-op', async () => {
     const r = await place(8);
-    const owner = await login('owner1@foodflow.dev');
+    const owner = await login('owner1@dishpatch.dev');
     const a = await move(r.body.id, 'ACCEPTED', owner);
     const b = await move(r.body.id, 'ACCEPTED', owner);
     assert.equal(b.status, 200);
@@ -163,7 +163,7 @@ describe('order lifecycle', () => {
 describe('dispatch engine', () => {
   async function acceptedOrder(n) {
     const r = await place(n);
-    await move(r.body.id, 'ACCEPTED', await login('owner1@foodflow.dev'));
+    await move(r.body.id, 'ACCEPTED', await login('owner1@dishpatch.dev'));
     return r.body.id;
   }
 
@@ -195,7 +195,7 @@ describe('dispatch engine', () => {
 
     await placeDrivers([{ id: 4, metres: 100 }, { id: 5, metres: 900 }]);
     assert.equal((await dispatchOrder(id)).driverId, 4);
-    const driver4 = await login('driver4@foodflow.dev');
+    const driver4 = await login('driver4@dishpatch.dev');
     const rej = await request(app).post(`/api/orders/${id}/reject-assignment`).set('Authorization', `Bearer ${driver4}`);
     assert.equal(rej.status, 200);
     assert.equal((await dispatchOrder(id)).driverId, 5);
@@ -205,8 +205,8 @@ describe('dispatch engine', () => {
     await placeDrivers([{ id: 1, metres: 100 }]);
     const id = await acceptedOrder(26);
     await dispatchOrder(id);
-    const owner = await login('owner1@foodflow.dev');
-    const driver = await login('driver1@foodflow.dev');
+    const owner = await login('owner1@dishpatch.dev');
+    const driver = await login('driver1@dishpatch.dev');
     assert.equal((await move(id, 'PICKED_UP', driver)).status, 409, 'not ready yet');
     await move(id, 'PREPARING', owner);
     await move(id, 'READY', owner);

@@ -1,5 +1,5 @@
 {
-  "name": "foodflow-loadtest",
+  "name": "dishpatch-loadtest",
   "private": true,
   "type": "module",
   "scripts": {

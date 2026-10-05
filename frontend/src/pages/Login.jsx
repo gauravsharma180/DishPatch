@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { api } from '../lib/api.js';
 
 const DEMOS = [
-  { email: 'customer1@foodflow.dev', role: 'Customer', does: 'Browse nearby kitchens, order, track the rider live' },
-  { email: 'owner1@foodflow.dev', role: 'Kitchen', does: 'Accept tickets, cook, mark ready, manage stock' },
-  { email: 'driver1@foodflow.dev', role: 'Rider', does: 'Go online, take assignments, stream GPS' },
-  { email: 'admin@foodflow.dev', role: 'Ops', does: 'Watch the fleet, dispatch decisions and order flow' },
+  { email: 'customer1@dishpatch.dev', role: 'Customer', does: 'Browse nearby kitchens, order, track the rider live' },
+  { email: 'owner1@dishpatch.dev', role: 'Kitchen', does: 'Accept tickets, cook, mark ready, manage stock' },
+  { email: 'driver1@dishpatch.dev', role: 'Rider', does: 'Go online, take assignments, stream GPS' },
+  { email: 'admin@dishpatch.dev', role: 'Ops', does: 'Watch the fleet, dispatch decisions and order flow' },
 ];
 
 export default function Login({ onLogin }) {
-  const [email, setEmail] = useState('customer1@foodflow.dev');
+  const [email, setEmail] = useState('customer1@dishpatch.dev');
   const [password, setPassword] = useState('password123');
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -21,7 +21,7 @@ export default function Login({ onLogin }) {
     try {
       onLogin(await api('/auth/login', { method: 'POST', body: { email: override || email, password } }));
     } catch (err) {
-      setError(err.status === 401 ? 'That email and password don’t match a FoodFlow account.' : err.message);
+      setError(err.status === 401 ? 'That email and password don’t match a DishPatch account.' : err.message);
     } finally {
       setBusy(false);
     }
@@ -38,7 +38,7 @@ export default function Login({ onLogin }) {
           Every step on the rail.
         </h1>
         <p>
-          FoodFlow follows a meal from the customer’s tap to the doorstep: kitchens get tickets in real time, the
+          DishPatch follows a meal from the customer’s tap to the doorstep: kitchens get tickets in real time, the
           dispatcher picks the best nearby rider, and everyone watches the same order move.
         </p>
       </section>

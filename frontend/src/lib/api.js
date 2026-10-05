@@ -1,4 +1,4 @@
-const KEY = 'foodflow.session';
+const KEY = 'dishpatch.session';
 
 export function getSession() {
   try {

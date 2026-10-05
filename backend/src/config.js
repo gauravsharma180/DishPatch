@@ -9,8 +9,8 @@ export const config = {
   // Tests reset the schema and flush Redis, so they must never inherit the dev DATABASE_URL/REDIS_URL
   // from .env. They use TEST_* overrides or the dedicated test database / Redis db 1.
   databaseUrl: isTest
-    ? process.env.TEST_DATABASE_URL || 'postgres://foodflow:foodflow@localhost:5432/foodflow_test'
-    : process.env.DATABASE_URL || 'postgres://foodflow:foodflow@localhost:5432/foodflow',
+    ? process.env.TEST_DATABASE_URL || 'postgres://dishpatch:dishpatch@localhost:5432/dishpatch_test'
+    : process.env.DATABASE_URL || 'postgres://dishpatch:dishpatch@localhost:5432/dishpatch',
   redisUrl: isTest
     ? process.env.TEST_REDIS_URL || 'redis://localhost:6379/1'
     : process.env.REDIS_URL || 'redis://localhost:6379/0',

@@ -1,4 +1,4 @@
-# FoodFlow
+# DishPatch
 
 A real-time food delivery backend with a working frontend: customers order, kitchens cook, a dispatch engine picks the best nearby rider, and everyone watches the order move live.
 
@@ -50,9 +50,9 @@ You need **Node 20+**, **PostgreSQL 14+** and **Redis 6.2+** (for `GEOSEARCH`).
 
 ```bash
 # 1. database + user (once)
-sudo -u postgres psql -c "CREATE USER foodflow WITH PASSWORD 'foodflow' SUPERUSER;"
-sudo -u postgres psql -c "CREATE DATABASE foodflow OWNER foodflow;"
-sudo -u postgres psql -c "CREATE DATABASE foodflow_test OWNER foodflow;"   # for npm test
+sudo -u postgres psql -c "CREATE USER dishpatch WITH PASSWORD 'dishpatch' SUPERUSER;"
+sudo -u postgres psql -c "CREATE DATABASE dishpatch OWNER dishpatch;"
+sudo -u postgres psql -c "CREATE DATABASE dishpatch_test OWNER dishpatch;"   # for npm test
 
 # 2. backend
 cd backend
@@ -75,10 +75,10 @@ Open http://localhost:5173 and pick a demo seat. All passwords are `password123`
 
 | Login | Sees |
 |---|---|
-| `customer1@foodflow.dev` | nearby kitchens, menu, cart, live order tracking with rider on the map |
-| `owner1@foodflow.dev` | kitchen ticket rail (New → Cooking → Ready → With rider), stock editor |
-| `driver1@foodflow.dev` | online/offline, assigned jobs, pickup/deliver, simulated GPS riding |
-| `admin@foodflow.dev` | live fleet map, orders by stage, every dispatch decision with its score |
+| `customer1@dishpatch.dev` | nearby kitchens, menu, cart, live order tracking with rider on the map |
+| `owner1@dishpatch.dev` | kitchen ticket rail (New → Cooking → Ready → With rider), stock editor |
+| `driver1@dishpatch.dev` | online/offline, assigned jobs, pickup/deliver, simulated GPS riding |
+| `admin@dishpatch.dev` | live fleet map, orders by stage, every dispatch decision with its score |
 
 The simulator drives riders 2–50 and leaves `driver1` for you, so you can take real assignments from the rider screen while the rest of the city runs itself.
 
