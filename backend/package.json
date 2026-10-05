@@ -11,7 +11,7 @@
     "migrate": "node src/db/migrate.js",
     "seed": "node src/db/seed.js",
     "sim": "node src/sim/driverSimulator.js",
-    "test": "NODE_ENV=test node --test --test-concurrency=1 tests/*.test.js",
+    "test": "cross-env NODE_ENV=test node --test --test-concurrency=1 tests/",
     "start:cluster": "node src/cluster.js"
   },
   "engines": {
@@ -35,6 +35,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "supertest": "^7.3.1"
   }
 }

@@ -4,6 +4,7 @@ import { useSocketEvent } from '../lib/socket.js';
 import Ticket from '../components/Ticket.jsx';
 
 const ACTIVE = 'PLACED,ACCEPTED,PREPARING,READY,PICKED_UP';
+const ACTIVE_SET = new Set(ACTIVE.split(','));
 
 const COLUMNS = [
   { title: 'New', statuses: ['PLACED'], empty: 'New orders print here the moment a customer pays.' },
@@ -44,7 +45,7 @@ export default function Kitchen({ session }) {
   const upsert = (o) =>
     setOrders((list) => {
       const rest = list.filter((x) => x.id !== o.id);
-      return ACTIVE.includes(o.status) ? [o, ...rest] : rest;
+      return ACTIVE_SET.has(o.status) ? [o, ...rest] : rest;
     });
 
   useSocketEvent('order:new', (o) => {

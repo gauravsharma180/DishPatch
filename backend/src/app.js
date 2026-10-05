@@ -55,6 +55,10 @@ export function createApp() {
     if (err instanceof AppError) {
       return res.status(err.status).json({ error: { code: err.code, message: err.message, details: err.details } });
     }
+    // Postgres "invalid text representation" (bad UUID / enum value in a URL or query string).
+    if (err.code === '22P02') {
+      return res.status(400).json({ error: { code: 'BAD_REQUEST', message: 'Invalid identifier or value' } });
+    }
     if (err.type === 'entity.parse.failed') {
       return res.status(400).json({ error: { code: 'BAD_JSON', message: 'Malformed JSON' } });
     }
